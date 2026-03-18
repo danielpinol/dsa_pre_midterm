@@ -41,7 +41,7 @@ class LinkedList:
 
         return length
 
-    def insert_at_beginning(self, element: 'Node'):
+    def insert_at_beginning(self, element: Node):
         element.next = self.start
 
         if self.start is not None:
@@ -49,7 +49,7 @@ class LinkedList:
 
         self.start = element
 
-    def insert_at_end(self, element: 'Node'):
+    def insert_at_end(self, element: Node):
         if self.start is None:
             self.start = element
             return
@@ -60,7 +60,7 @@ class LinkedList:
         last.next = element
         element.prev = last
 
-    def insert_after_node(self, element: 'Node', node_reference: any):
+    def insert_after_node(self, element: Node, node_reference: any):
         for node in self:
             if node.data == node_reference:
                 element.next = node.next
