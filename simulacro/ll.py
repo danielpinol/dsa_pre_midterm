@@ -1,10 +1,15 @@
 class Node:
-    def __init__(self, data: any):
-        self.data = data
+    def __init__(self, song: str, artist: str, album: str):
+        self.data = {
+            'song': song,
+            'artist': artist,
+            'album': album
+        }
         self.next = None
+        self.prev = None
 
     def __repr__(self):
-        return f'( {self.data} )'
+        return f'( {self.data["song"]} - {self.data["artist"]} )'
 
 
 class LinkedList:
@@ -15,7 +20,7 @@ class LinkedList:
         nodes = ['START']
 
         for node in self:
-            nodes.append(str(node.data))
+            nodes.append(str(node.data['song']))
 
         nodes.append('NIL')
 
@@ -38,6 +43,10 @@ class LinkedList:
 
     def insert_at_beginning(self, element: 'Node'):
         element.next = self.start
+
+        if self.start is not None:
+            self.start.prev = element
+
         self.start = element
 
     def insert_at_end(self, element: 'Node'):
@@ -49,11 +58,17 @@ class LinkedList:
             last = node
 
         last.next = element
+        element.prev = last
 
     def insert_after_node(self, element: 'Node', node_reference: any):
         for node in self:
             if node.data == node_reference:
                 element.next = node.next
+                element.prev = node
+
+                if node.next is not None:
+                    node.next.prev = element
+
                 node.next = element
                 return
 
@@ -63,14 +78,19 @@ class LinkedList:
 
         if self.start.data == element_data:
             self.start = self.start.next
+
+            if self.start is not None:
+                self.start.prev = None
+
             return
 
-        prev = None
         for node in self:
             if node.data == element_data:
-                prev.next = node.next
+                if node.next is not None:
+                    node.next.prev = node.prev
+
+                node.prev.next = node.next
                 return
-            prev = node
 
     def search(self, element_data: any):
         for node in self:
